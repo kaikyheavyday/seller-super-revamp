@@ -1,10 +1,10 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
 import FormLogin from "./components/FormLogin";
+import { signIn, useSession } from "next-auth/react";
 import { useMutation } from "@tanstack/react-query";
 import {
   checkPhoneNumber,
@@ -17,9 +17,17 @@ import FormOtp from "./components/FormOtp";
 
 const LoginPage: FC = () => {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const [step, setStep] = useState<1 | 2>(1);
   const [otpData, setOtpData] = useState<ISendOtpToPhoneNumberResponse>();
   const [telNumber, setTelNumber] = useState<string>("");
+
+  // Redirect to home if already authenticated
+  useEffect(() => {
+    if (status === "authenticated" && session) {
+      router.push("/");
+    }
+  }, [status, session, router]);
 
   const { mutateAsync: handleCheckPhoneNumber } = useMutation({
     mutationFn: async (data: { phoneNumber: string }) => {
@@ -88,28 +96,18 @@ const LoginPage: FC = () => {
   const handleFinishOtp = async (values: { otp: string }) => {
     try {
       if (otpData) {
-        const response = await handleLoginWithPhoneOtp({
+        const result = await signIn("credentials", {
           phoneNumber: telNumber,
           otp: values.otp,
           otpToken: otpData.token,
+          redirect: false,
         });
 
-        if (response.data) {
-          // Save accessToken
-          Cookies.set("accessToken", response.data.accessToken, { expires: 7 });
-
-          // Save full auth object
-          Cookies.set(
-            "auth",
-            JSON.stringify({
-              accessToken: response.data.accessToken,
-              authCenter: response.data.authCenter,
-            }),
-            { expires: 7 }
-          );
-
-          // Navigate to dashboard
-          router.push("/dashboard");
+        if (result?.error) {
+          console.error("Sign in error:", result.error);
+        } else {
+          // Navigate to dashboard on success
+          router.push("/");
         }
       }
     } catch (error) {

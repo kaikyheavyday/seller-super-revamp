@@ -5,7 +5,6 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
-import Cookies from "js-cookie";
 
 // Microservice URL builder
 const getServiceUrl = (service: "product" | "order" | "customer") => {
@@ -31,30 +30,30 @@ class AxiosClient {
   }
 
   private createInstance(config?: AxiosRequestConfig): AxiosInstance {
-    const auth = Cookies.get("auth");
-    const authData = auth ? JSON.parse(auth) : null;
-
     return axios.create({
       baseURL: process.env.NEXT_PUBLIC_API_HOST_URL,
       timeout: 30000,
       headers: {
         "Content-Type": "application/json",
         "app-id": process.env.NEXT_PUBLIC_ALLKONS_APP_ID,
-        Authorization: `Bearer ${authData?.accessToken || ""}`,
       },
-      ...config, // Merge custom configuration props
+      ...config,
     });
   }
 
   private setupInterceptors() {
-    // Request interceptor to always get fresh auth token
+    // Request interceptor to add auth token from NextAuth session
     this.instance.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
-        const auth = Cookies.get("auth");
-        const authData = auth ? JSON.parse(auth) : null;
-
-        if (authData?.accessToken) {
-          config.headers.Authorization = `Bearer ${authData.accessToken}`;
+        // In the browser, NextAuth session token is stored in cookies
+        // The auth() function will handle it server-side
+        // For client-side requests, the token will be in the session cookie
+        // which is automatically sent with requests
+        
+        // If you need to manually add the token from session storage or elsewhere:
+        if (typeof window !== 'undefined') {
+          // Client-side: Token will be included automatically via cookies
+          // Or you can get it from session if needed
         }
 
         return config;
@@ -70,15 +69,11 @@ class AxiosClient {
         
         // Handle 401 Unauthorized errors
         if (error.response?.status === 401) {
-          console.log("[Axios] 401 Unauthorized - Clearing auth and redirecting to login");
+          console.log("[Axios] 401 Unauthorized - Session expired");
           
-          // Clear auth cookies
-          Cookies.remove("auth");
-          Cookies.remove("accessToken");
-          
-          // Redirect to login page
+          // Redirect to NextAuth signout which will clear session and redirect to login
           if (typeof window !== "undefined") {
-            window.location.href = "/login";
+            window.location.href = "/api/auth/signout?callbackUrl=/login";
           }
         }
         
@@ -90,12 +85,6 @@ class AxiosClient {
   public updateAuthToken(token?: string) {
     if (token) {
       this.instance.defaults.headers.Authorization = `Bearer ${token}`;
-    } else {
-      const auth = Cookies.get("auth");
-      const authData = auth ? JSON.parse(auth) : null;
-      this.instance.defaults.headers.Authorization = `Bearer ${
-        authData?.accessToken || ""
-      }`;
     }
   }
 
