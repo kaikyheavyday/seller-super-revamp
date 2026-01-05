@@ -1,0 +1,11 @@
+.custom-allkons.custom-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 !important;
+  width: 100%;
+}
+
+.custom-allkons.custom-radio-group .ant-radio {
+  align-self: start !important;
+  margin-top: 4px !important;
+}

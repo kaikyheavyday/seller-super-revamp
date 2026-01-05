@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.ant-upload-wrapper.custom-allkons-upload-file-dragger .ant-upload-drag {
+  @apply border border-solid border-border-primary hover:border-primary overflow-auto rounded-xl bg-white hover:bg-background-secondary;
+}
+
+.ant-upload-wrapper.custom-allkons-upload-file-dragger
+  .ant-upload-drag
+  .ant-upload {
+  @apply p-6;
+}

@@ -1,0 +1,182 @@
+.ant-typography.typography-display-1 {
+  @apply text-[3.75em] leading-[4.5rem] md:text-[4.5rem] md:leading-[5.375rem] font-bold tracking-[0rem];
+}
+.ant-typography.typography-display-2 {
+  @apply text-[3.5rem] leading-[4rem] md:text-[4rem] md:leading-[4.75rem] font-bold tracking-[0rem];
+}
+.ant-typography.typography-display-3 {
+  @apply text-[3rem] leading-[3.5rem] md:text-[3.5rem] md:leading-[4rem] font-bold tracking-[0rem];
+}
+.ant-typography.typography-display-4 {
+  @apply text-[2.75rem] leading-[3.25rem] md:text-[3rem] md:leading-[3.5rem] font-bold tracking-[0rem];
+}
+.ant-typography.typography-display-5 {
+  @apply text-[2.5rem] leading-[3rem] md:text-[2.75rem] md:leading-[3.25rem] font-bold tracking-[0rem];
+}
+.ant-typography.typography-display-6 {
+  @apply text-[2rem] leading-[2.25rem] md:text-[2.25rem] md:leading-[3rem] font-bold tracking-[0rem];
+}
+
+.ant-typography.typography-h1 {
+  @apply text-[2.25em] leading-[3rem] md:text-[2.5rem] md:leading-[3rem] font-bold tracking-[0rem];
+}
+.ant-typography.typography-h2 {
+  @apply text-[1.75rem] leading-[2rem] md:text-[2rem] md:leading-[2.75rem] font-bold tracking-[0rem];
+}
+.ant-typography.typography-h3 {
+  @apply text-[1.5rem] leading-[1.75rem] md:text-[1.75rem] md:leading-[2rem] font-bold tracking-[0rem];
+}
+.ant-typography.typography-h4 {
+  @apply text-[1.25rem] leading-[1.625rem] md:text-[1.5rem] md:leading-[1.75rem] font-bold tracking-[0rem];
+}
+.ant-typography.typography-h5 {
+  @apply text-[1.125rem] leading-[1.5rem] md:text-[1.25rem] md:leading-[1.625rem] font-bold tracking-[0rem];
+}
+.ant-typography.typography-h6 {
+  @apply text-[1rem] leading-[1.5rem] md:text-[1rem] md:leading-[1.5rem] font-bold tracking-[0rem];
+}
+
+.ant-typography.typography-page-title {
+  @apply text-[1.5rem] leading-[1.75rem] md:text-[1.75rem] md:leading-[2rem] font-bold tracking-[0rem];
+}
+
+/* Paragraph Styles */
+.ant-typography.typography-paragraph-big {
+  @apply text-[1.125rem] leading-[1.5rem] md:text-[1.125rem] md:leading-[1.75rem] font-normal tracking-[0rem];
+}
+.ant-typography.typography-paragraph-medium {
+  @apply text-[1rem] leading-[1.5rem] font-normal tracking-[0rem];
+}
+.ant-typography.typography-paragraph-small {
+  @apply text-[0.875rem] leading-[1.25rem] font-normal tracking-[0rem];
+}
+.ant-typography.typography-paragraph-extra-small {
+  @apply text-[0.75rem] leading-[1rem] font-light tracking-[0rem];
+}
+
+/* Paragraph Big - lg size (18px) */
+.ant-typography.typography-paragraph-big-regular {
+  @apply text-[1.125rem] leading-[1.5rem] font-normal tracking-[0rem];
+}
+.ant-typography.typography-paragraph-big-medium {
+  @apply text-[1.125rem] leading-[1.5rem] font-medium tracking-[0rem];
+}
+.ant-typography.typography-paragraph-big-semibold {
+  @apply text-[1.125rem] leading-[1.5rem] font-semibold tracking-[0rem];
+}
+.ant-typography.typography-paragraph-big-strikethrough {
+  @apply text-[1.125rem] leading-[1.5rem] font-normal tracking-[0rem] line-through;
+}
+
+/* Paragraph Middle - md size (16px) */
+.ant-typography.typography-paragraph-middle-regular {
+  @apply text-[1rem] leading-[1.5rem] font-normal tracking-[0rem];
+}
+.ant-typography.typography-paragraph-middle-medium {
+  @apply text-[1rem] leading-[1.5rem] font-medium tracking-[0rem];
+}
+.ant-typography.typography-paragraph-middle-semibold {
+  @apply text-[1rem] leading-[1.5rem] font-semibold tracking-[0rem];
+}
+.ant-typography.typography-paragraph-middle-strikethrough {
+  @apply text-[1rem] leading-[1.5rem] font-normal tracking-[0rem] line-through;
+}
+
+/* Paragraph Small - sm size (14px) */
+.ant-typography.typography-paragraph-small-regular {
+  @apply text-[0.875rem] leading-[1.25rem] font-normal tracking-[0rem];
+}
+.ant-typography.typography-paragraph-small-medium {
+  @apply text-[0.875rem] leading-[1.25rem] font-medium tracking-[0rem];
+}
+.ant-typography.typography-paragraph-small-semibold {
+  @apply text-[0.875rem] leading-[1.25rem] font-semibold tracking-[0rem];
+}
+.ant-typography.typography-paragraph-small-strikethrough {
+  @apply text-[0.875rem] leading-[1.25rem] font-normal tracking-[0rem] line-through;
+}
+
+/* Paragraph Extra Small - xs size (12px) */
+.ant-typography.typography-paragraph-extra-small-regular {
+  @apply text-[0.75rem] leading-[1rem] font-normal tracking-[0rem];
+}
+.ant-typography.typography-paragraph-extra-small-medium {
+  @apply text-[0.75rem] leading-[1rem] font-medium tracking-[0rem];
+}
+.ant-typography.typography-paragraph-extra-small-semibold {
+  @apply text-[0.75rem] leading-[1rem] font-semibold tracking-[0rem];
+}
+.ant-typography.typography-paragraph-extra-small-strikethrough {
+  @apply text-[0.75rem] leading-[1rem] font-normal tracking-[0rem] line-through;
+}
+
+/* Subtitle */
+.ant-typography.typography-subtitle {
+  @apply text-[0.875rem] leading-[1.25rem] font-normal tracking-[0rem];
+}
+
+/* Labels */
+.ant-typography.typography-label-selection {
+  @apply text-[1rem] leading-[1.5rem] font-normal tracking-[0rem];
+}
+.ant-typography.typography-label-list {
+  @apply text-[0.875rem] leading-[1.25rem] font-normal tracking-[0rem];
+}
+.ant-typography.typography-label-input-small {
+  @apply text-[0.875rem] leading-[1.25rem] font-normal tracking-[0rem];
+}
+.ant-typography.typography-label-input-middle {
+  @apply text-[1rem] leading-[1.5rem] font-normal tracking-[0rem];
+}
+.ant-typography.typography-clickable-label {
+  @apply text-[0.875rem] leading-[1.25rem] font-normal tracking-[0rem] uppercase;
+}
+
+/* Values */
+.ant-typography.typography-value-list {
+  @apply text-[0.875rem] leading-[1.25rem] font-bold tracking-[0rem];
+}
+
+/* Placeholder */
+.ant-typography.typography-placeholder {
+  @apply text-[1rem] leading-[1.5rem] font-normal tracking-[0rem] uppercase;
+}
+
+/* Buttons */
+.ant-typography.typography-button-big {
+  @apply text-[1.125rem] leading-[1.5rem] font-bold tracking-[0rem];
+}
+.ant-typography.typography-button-middle {
+  @apply text-[1rem] leading-[1.5rem] font-bold tracking-[0rem];
+}
+.ant-typography.typography-button-small {
+  @apply text-[0.875rem] leading-[1.25rem] font-bold tracking-[0rem];
+}
+
+/* Links */
+.ant-typography.typography-link-big {
+  @apply text-[1.125rem] leading-[1.5rem] font-light tracking-[0rem] underline;
+}
+.ant-typography.typography-link-middle {
+  @apply text-[1rem] leading-[1.5rem] font-light tracking-[0rem] underline;
+}
+.ant-typography.typography-link-small {
+  @apply text-[0.875rem] leading-[1.25rem] font-light tracking-[0rem] underline;
+}
+
+.ant-typography.typography-all-cap {
+  @apply text-[0.75rem] leading-[1rem] font-normal tracking-[0rem] uppercase;
+}
+
+/* Error */
+.ant-typography.typography-error {
+  @apply text-[0.625rem] leading-[0.625rem] font-normal tracking-[0rem] uppercase;
+}
+
+.ant-typography .ant-typography-expand {
+  @apply !text-black;
+}
+
+.ant-typography .ant-typography-collapse {
+  @apply !text-black;
+}

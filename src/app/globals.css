@@ -1,0 +1,246 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #00af43;
+  --color-primary-hover: #e5f7ec;
+  --color-primary-dark: #006928;
+  --color-success: #1eb950;
+  --color-success-subtle: #e8f8ed;
+  --color-success-darker: #11662c;
+  --color-success-p-60: #97dfae;
+  --color-success-p-90: #e8f8ed;
+  --color-warning: #ffab08;
+  --color-warning-darker: #996705;
+  --color-warning-subtle: #fff3e6;
+  --color-warning-p-60: #ffdd9c;
+  --color-warning-p-90: #fff7e6;
+  --color-error: #da2110;
+  --color-error-subtle: #fbe8e7;
+  --color-error-p-60: #f0a69f;
+  --color-error-p-90: #fbe8e7;
+  --color-error-dark: #ae1a0c;
+  --color-error-hover: #fbe8e7;
+  --color-info: #65b2e8;
+  --color-info-subtle: #eff7fc;
+  --color-info-darker: #3c6a8b;
+  --color-info-p-60: #c1e0f5;
+  --color-info-p-90: #eff7fc;
+  --color-gray-light: #5b6a83;
+  --color-gray-dark: #050507;
+  --color-disabled: #dee1e6;
+  --color-brand-lighter: #f3f8fd;
+  --color-brand-darker: #183e60;
+  --color-brand-00: #477ab3;
+  --color-brand-20: #477ab3;
+  --color-brand-p-60: #b5cae1;
+  --color-brand-p-20: #b5cae1;
+  --color-purple-p-90: #edf2f7;
+  --color-neutral-40: #37404f;
+  --color-neutral-60: #242a34; /* color for neutral hover text */
+  --color-neutral-p-80: #dee1e6; /* color for neutral border default */
+  --color-neutral-90: #090b0d;
+  --color-neutral-p-95: #f7f8f9; /* color for neutral bg default */
+  --color-neutral-p-90: #eff0f3;
+  --color-lavender-purple-00: #a3a2dd;
+  --color-lavender-purple-20: #8282b1;
+  --color-lavender-purple-p-60: #dadaf1;
+  --color-lavender-purple-p-90: #f6f6fc;
+  --color-text-primary: #12151a;
+  --color-text-secondary: #37404f;
+  --color-text-quinary: #7c889c;
+  --color-text-placeholder: #9da6b5;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f7f8f9;
+  --color-icon-secondary: #37404f; /* color for neutral text default */
+  --color-dark-orange-00: #e44218;
+  --color-dark-orange-p-90: #fcece8;
+  --font-kanit: "Kanit", sans-serif;
+  --font-noto-sans-thai-looped: "Noto Sans Thai Looped", sans-serif;
+}
+html {
+  background-color: #f7f8f9 !important;
+}
+
+body {
+  font-family: var(--font-noto-sans-thai-looped) !important;
+}
+
+* {
+  font-family: var(--font-noto-sans-thai-looped) !important;
+}
+
+div:not([class*="ant-"])[class] {
+  animation: slideInUp 0.4s ease-out;
+}
+
+.ant-form-item .ant-form-item-label label {
+  height: auto;
+}
+
+.ant-typography {
+  margin: 0 !important;
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ced2da;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #ced2da;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #ced2da transparent;
+}
+
+.ant-otp-input {
+  width: 48px !important;
+}
+
+.ant-form-item-explain-success {
+  color: var(--color-primary);
+}
+
+/* disable box-shadow for drawer */
+.ant-drawer-content-wrapper {
+  box-shadow: none !important;
+  max-height: 100vh !important;
+  overflow: auto !important;
+}
+
+@media screen and (max-width: 377px) {
+  .ant-otp-input {
+    width: 40px !important;
+  }
+}
+
+.ant-breadcrumb-link {
+  @apply !text-text-breadcrumb;
+}
+
+.ant-breadcrumb ol li:last-child .ant-breadcrumb-link {
+  @apply !text-text-breadcrumb-active;
+}
+
+.ant-pagination .ant-pagination-item {
+  @apply !border-border-primary !flex !items-center !justify-center;
+}
+
+.ant-pagination-item > a {
+  @apply !text-text-secondary !text-sm !font-normal;
+}
+
+.ant-pagination-item.ant-pagination-item-active {
+  @apply !bg-primary;
+}
+
+.ant-pagination-item.ant-pagination-item-active > a {
+  @apply !text-white;
+}
+
+.ant-pagination-next,
+.ant-pagination-next.ant-pagination-disabled {
+  @apply !ml-2;
+}
+
+.ant-pagination-disabled {
+  @apply !opacity-50;
+}
+
+.ant-pagination-prev,
+.ant-pagination-prev.ant-pagination-disabled {
+  @apply !mr-3;
+}
+
+.ant-pagination-next > button,
+.ant-pagination-prev > button {
+  @apply !text-text-secondary !border !border-border-primary;
+}
+
+ul.ant-pagination > li {
+  @apply !mr-1;
+}
+
+.ant-pagination-options {
+  @apply !ml-2;
+}
+
+.ant-select-selector
+  .ant-select-selection-wrap
+  > span.ant-select-selection-item {
+  @apply !font-normal !text-base !tracking-[0.4px] !text-text-secondary;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.ant-notification .ant-notification-notice-wrapper {
+  @apply !rounded-xl;
+}
+.custom-success-notification {
+  @apply !p-4 !border !border-success-lighter !bg-success-subtle !rounded-xl;
+}
+.custom-success-notification .ant-notification-notice-message {
+  @apply !mb-0;
+}
+.custom-success-notification .ant-notification-notice-close {
+  @apply !top-4 !right-3;
+}
+.custom-success-notification .ant-notification-notice-close svg {
+  @apply !fill-primary;
+}
+
+.custom-error-notification {
+  @apply !p-4 !border !border-error-lighter !bg-error-subtle !rounded-xl;
+}
+.custom-error-notification .ant-notification-notice-message {
+  @apply !mb-0;
+}
+.custom-error-notification .ant-notification-notice-close {
+  @apply !top-4 !right-3;
+}
+.custom-error-notification .ant-notification-notice-close svg {
+  @apply !fill-error;
+}
+
+.ant-avatar img {
+  @apply !w-auto !h-auto;
+}
+
+.no-scroll {
+  @apply !overflow-hidden !h-[calc(100vh-100px)];
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+label.ant-form-item-required::before {
+  @apply !hidden;
+}

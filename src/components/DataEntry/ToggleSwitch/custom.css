@@ -1,0 +1,42 @@
+.ant-switch:hover {
+  filter: brightness(0.9);
+}
+
+.brand:focus {
+  outline: 2px solid var(--color-brand-p-60);
+  outline-offset: 1px;
+}
+
+.default:focus {
+  outline: 2px solid var(--color-success-p-60);
+  outline-offset: 1px;
+}
+
+.ant-switch-handle {
+  margin-top: 0.5px !important;
+}
+
+.ant-switch.ant-switch-small .ant-switch-handle {
+  margin-top: 2px !important;
+}
+
+.ant-switch.ant-switch-small .ant-switch-inner {
+  margin-top: 2px !important;
+}
+
+.ant-switch-inner {
+  margin-top: 1px !important;
+  font-size: 12px !important;
+}
+
+.ant-switch-inner-unchecked {
+  color: var(--color-text-placeholder) !important;
+}
+
+.ant-switch.ant-switch-disabled * {
+  color: var(--color-text-placeholder) !important;
+}
+
+.ant-switch:disabled .ant-switch-handle::before {
+  background-color: #fff !important;
+}

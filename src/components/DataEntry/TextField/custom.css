@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.custom-allkons-input .ant-input-group-addon {
+  @apply !text-base;
+}
+
+.custom-allkons-input .ant-input-wrapper.ant-input-group input {
+  @apply !text-base;
+}

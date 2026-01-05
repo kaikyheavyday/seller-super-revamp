@@ -1,0 +1,29 @@
+.custom-allkons.custom-checkbox .ant-checkbox {
+  align-self: start !important;
+  margin-top: 4px !important;
+}
+
+.custom-allkons.custom-checkbox.ant-checkbox-wrapper.size-small
+  .ant-checkbox
+  .ant-checkbox-inner {
+  width: 16px;
+  height: 16px;
+}
+
+.custom-allkons.custom-checkbox.ant-checkbox-wrapper.size-default
+  .ant-checkbox
+  .ant-checkbox-inner {
+  width: 20px;
+  height: 20px;
+}
+
+.custom-allkons.custom-checkbox.ant-checkbox-wrapper.size-large
+  .ant-checkbox
+  .ant-checkbox-inner {
+  width: 20px;
+  height: 20px;
+}
+
+.custom-allkons.custom-checkbox.ant-checkbox-wrapper .ant-checkbox-label {
+  margin-top: 2px;
+}
