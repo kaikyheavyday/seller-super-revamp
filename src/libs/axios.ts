@@ -5,6 +5,7 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
+import { getSessionCookie } from "./auth-cookies";
 
 // Microservice URL builder
 const getServiceUrl = (service: "product" | "order" | "customer") => {
@@ -42,18 +43,15 @@ class AxiosClient {
   }
 
   private setupInterceptors() {
-    // Request interceptor to add auth token from NextAuth session
+    // Request interceptor to add auth token from session cookie
     this.instance.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
-        // In the browser, NextAuth session token is stored in cookies
-        // The auth() function will handle it server-side
-        // For client-side requests, the token will be in the session cookie
-        // which is automatically sent with requests
-        
-        // If you need to manually add the token from session storage or elsewhere:
+        // Client-side: Get token from cookie
         if (typeof window !== 'undefined') {
-          // Client-side: Token will be included automatically via cookies
-          // Or you can get it from session if needed
+          const session = getSessionCookie();
+          if (session?.accessToken) {
+            config.headers.Authorization = `Bearer ${session.accessToken}`;
+          }
         }
 
         return config;
@@ -71,9 +69,9 @@ class AxiosClient {
         if (error.response?.status === 401) {
           console.log("[Axios] 401 Unauthorized - Session expired");
           
-          // Redirect to NextAuth signout which will clear session and redirect to login
+          // Redirect to logout
           if (typeof window !== "undefined") {
-            window.location.href = "/api/auth/signout?callbackUrl=/login";
+            window.location.href = "/login";
           }
         }
         

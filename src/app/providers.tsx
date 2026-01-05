@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState } from "react";
 import thTH from "antd/locale/th_TH";
-import { SessionProvider } from "next-auth/react";
+import { AuthProvider } from "@/hooks/useAuth";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -26,7 +26,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <SessionProvider>
+    <AuthProvider>
       <QueryClientProvider client={queryClient}>
         <ConfigProvider
           locale={thTH}
@@ -48,6 +48,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
         </ConfigProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
-    </SessionProvider>
+    </AuthProvider>
   );
 }

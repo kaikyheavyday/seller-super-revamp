@@ -1,21 +1,24 @@
 "use client";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { status, data } = useSession();
+  const { user, loading } = useAuth();
   const router = useRouter();
-  console.log("AuthLayout session data:", data);
-  if (!data) {
-    router.push("/login");
-  }
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/login");
+    }
+  }, [loading, user, router]);
 
   // Show loading state while checking session
-  if (status === "loading") {
+  if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-gray-600">Loading...</div>
@@ -23,6 +26,10 @@ export default function AuthLayout({
     );
   }
 
-  // Middleware handles redirects, just render children
+  // If no user after loading, don't render (redirect will happen)
+  if (!user) {
+    return null;
+  }
+
   return <>{children}</>;
 }
