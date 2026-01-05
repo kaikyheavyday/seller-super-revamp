@@ -62,10 +62,26 @@ class AxiosClient {
       (error: AxiosError) => Promise.reject(error)
     );
 
+    // Response interceptor to handle 401 errors
     this.instance.interceptors.response.use(
       (response: AxiosResponse) => response,
       (error: AxiosError) => {
         console.error("Axios error:", error);
+        
+        // Handle 401 Unauthorized errors
+        if (error.response?.status === 401) {
+          console.log("[Axios] 401 Unauthorized - Clearing auth and redirecting to login");
+          
+          // Clear auth cookies
+          Cookies.remove("auth");
+          Cookies.remove("accessToken");
+          
+          // Redirect to login page
+          if (typeof window !== "undefined") {
+            window.location.href = "/login";
+          }
+        }
+        
         return Promise.reject(error);
       }
     );

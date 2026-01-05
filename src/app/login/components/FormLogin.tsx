@@ -7,6 +7,10 @@ import Typography from "@/components/Typography";
 import { Form } from "antd";
 import { useState } from "react";
 
+interface FormLoginProps {
+  onFinishPhoneLogin?: (values: IPhoneLoginForm) => void;
+  onFinishEmailLogin?: (values: IEmailLoginForm) => void;
+}
 interface IPhoneLoginForm {
   phoneNumber: string;
 }
@@ -16,15 +20,22 @@ interface IEmailLoginForm {
   password: string;
 }
 
-const FormLogin = () => {
+const FormLogin = ({
+  onFinishPhoneLogin,
+  onFinishEmailLogin,
+}: FormLoginProps) => {
   const [loginType, setLoginType] = useState<"phone" | "email">("phone");
   const [phoneLoginForm] = Form.useForm<IPhoneLoginForm>();
   const [emailLoginForm] = Form.useForm<IEmailLoginForm>();
   const handleSubmitPhoneLogin = (values: IPhoneLoginForm) => {
-    console.log("Phone Login Values:", values);
+    if (onFinishPhoneLogin) {
+      onFinishPhoneLogin(values);
+    }
   };
   const handleSubmitEmailLogin = (values: IEmailLoginForm) => {
-    console.log("Email Login Values:", values);
+    if (onFinishEmailLogin) {
+      onFinishEmailLogin(values);
+    }
   };
   return (
     <div className="flex justify-center items-center w-full">
