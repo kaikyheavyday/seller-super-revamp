@@ -6,11 +6,7 @@ import { useRouter } from "next/navigation";
 import FormLogin from "./components/FormLogin";
 import { useAuth } from "@/hooks/useAuth";
 import { useMutation } from "@tanstack/react-query";
-import {
-  checkPhoneNumber,
-  sendOtpToPhoneNumber,
-  getUserProfileByPhone,
-} from "@/api/auth.api";
+import { checkPhoneNumber, sendOtpToPhoneNumber } from "@/api/auth.api";
 import FormOtp from "./components/FormOtp";
 import {
   IAuthResponseSendOtpToPhoneNumber,
@@ -32,7 +28,7 @@ const LoginPage: FC = () => {
     }
   }, [user, router]);
 
-  const { mutateAsync: handleCheckPhoneNumber } = useMutation({
+  const { mutate: handleCheckPhoneNumber } = useMutation({
     mutationFn: async (data: { phoneNumber: string }) => {
       const response = await checkPhoneNumber({
         phoneNumber: data.phoneNumber,
@@ -42,7 +38,7 @@ const LoginPage: FC = () => {
     },
   });
 
-  const { mutateAsync: handleSendOtp } = useMutation({
+  const { mutate: handleSendOtp } = useMutation({
     mutationFn: async (data: { phoneNumber: string }) => {
       const response = await sendOtpToPhoneNumber({
         phoneNumber: data.phoneNumber,
@@ -50,36 +46,40 @@ const LoginPage: FC = () => {
       });
       return response;
     },
+    onSuccess: (response) => {
+      if (response.data) {
+        setOtpData(response.data);
+        setStep(2);
+      }
+    },
+    onError: (error) => {
+      console.error("Error sending OTP:", error);
+    },
   });
 
   const handlePhoneLogin = async (values: { phoneNumber: string }) => {
-    try {
-      const { data } = await handleCheckPhoneNumber({
-        phoneNumber: values.phoneNumber.startsWith("0")
-          ? values.phoneNumber.slice(1)
-          : values.phoneNumber,
-      });
-      if (
-        data?.code === ResponseCheckPhoneNumberCode.CHECK_PHONE_EXISTS_IN_SYSTEM
-      ) {
-        const response = await handleSendOtp({
-          phoneNumber: values.phoneNumber.startsWith("0")
-            ? values.phoneNumber.slice(1)
-            : values.phoneNumber,
-        });
-        if (response.data) {
-          setOtpData(response.data);
-          setTelNumber(
-            values.phoneNumber.startsWith("0")
-              ? values.phoneNumber.slice(1)
-              : values.phoneNumber
-          );
-          setStep(2);
-        }
+    const phoneNumber = values.phoneNumber.startsWith("0")
+      ? values.phoneNumber.slice(1)
+      : values.phoneNumber;
+
+    setTelNumber(phoneNumber);
+
+    handleCheckPhoneNumber(
+      { phoneNumber },
+      {
+        onSuccess: (data) => {
+          if (
+            data?.data?.code ===
+            ResponseCheckPhoneNumberCode.CHECK_PHONE_EXISTS_IN_SYSTEM
+          ) {
+            handleSendOtp({ phoneNumber });
+          }
+        },
+        onError: (error) => {
+          console.error("Error checking phone number:", error);
+        },
       }
-    } catch (error) {
-      console.log(error);
-    }
+    );
   };
 
   const handleFinishOtp = async (values: { otp: string }) => {

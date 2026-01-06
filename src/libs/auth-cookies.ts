@@ -1,7 +1,6 @@
 import Cookies from "js-cookie";
 
 const SESSION_COOKIE_NAME = "auth-session";
-const SESSION_COOKIE_MERCHANT_NAME = "auth-session-merchant";
 
 export interface SessionData {
   accessToken: string;

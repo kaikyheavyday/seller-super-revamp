@@ -6,6 +6,7 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 import { getSessionCookie } from "./auth-cookies";
+import { useUserStore } from "@/store/user.store";
 
 // Microservice URL builder
 const getServiceUrl = (service: "product" | "order" | "customer") => {
@@ -47,34 +48,37 @@ class AxiosClient {
     this.instance.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
         // Client-side: Get token from cookie
-        if (typeof window !== 'undefined') {
+
+        if (typeof window !== "undefined") {
           const session = getSessionCookie();
+          const merchant = useUserStore.getState().merchant;
           if (session?.accessToken) {
             config.headers.Authorization = `Bearer ${session.accessToken}`;
+          }
+          if (merchant) {
+            config.headers["CurrentMerchantSlug"] = merchant.merchantSlug;
           }
         }
 
         return config;
       },
       (error: AxiosError) => Promise.reject(error)
-    );
-
-    // Response interceptor to handle 401 errors
+    ); // Response interceptor to handle 401 errors
     this.instance.interceptors.response.use(
       (response: AxiosResponse) => response,
       (error: AxiosError) => {
         console.error("Axios error:", error);
-        
+
         // Handle 401 Unauthorized errors
         if (error.response?.status === 401) {
           console.log("[Axios] 401 Unauthorized - Session expired");
-          
+
           // Redirect to logout
           if (typeof window !== "undefined") {
             window.location.href = "/login";
           }
         }
-        
+
         return Promise.reject(error);
       }
     );

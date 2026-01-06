@@ -10,6 +10,7 @@ import {
   IAuthResponseLoginWithPhoneOtp,
   IAuthResponseSendOtpToPhoneNumber,
   IAuthResponseUserProfile,
+  IAuthResponseUserProfileWithMerchants,
 } from "@/interfaces/auth/auth.response.interface";
 
 export const checkPhoneNumber = async (
@@ -51,6 +52,13 @@ export const getUserProfileByPhone = async (
         countryCode: payload.countryCode,
       },
     }
+  );
+  return response.data;
+};
+
+export const getProfile = async () => {
+  const response = await customerAPI.get<IAuthResponseUserProfileWithMerchants>(
+    "/auth"
   );
   return response.data;
 };

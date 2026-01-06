@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import Navbar from "@/components/Navbar";
-import { useUserStore } from "@/store/user.store";
 import { RouteEnum } from "../constants/enum/route.enum";
 
 export default function AuthLayout({
