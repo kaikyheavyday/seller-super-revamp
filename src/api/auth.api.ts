@@ -1,77 +1,56 @@
 import type { ApiResponse } from "@/types/common.type";
 import { customerAPI } from "@/libs/axios";
+import {
+  IAuthRequestCheckPhoneNumberPayload,
+  IAuthRequestLoginWithPhoneOtpPayload,
+  IAuthRequestVerifyPhoneOtpPayload,
+} from "@/interfaces/auth/auth.request.interface";
+import {
+  IAuthResponseCheckPhoneNumber,
+  IAuthResponseLoginWithPhoneOtp,
+  IAuthResponseSendOtpToPhoneNumber,
+  IAuthResponseUserProfile,
+} from "@/interfaces/auth/auth.response.interface";
 
-export interface ICheckPhoneNumberPayload {
-  phoneNumber: string;
-  countryCode: string;
-}
-
-export interface ICheckPhoneNumberResponse {
-  code: string;
-}
-
-export enum CheckPhoneNumberCode {
-  CHECK_PHONE_EXISTS = "REGISTER_SUC001",
-  CHECK_PHONE_EXISTS_IN_SYSTEM = "REGISTER_SUC002",
-  CHECK_PHONE_DOES_NOT_EXISTS = "REGISTER_SUCC003",
-}
-
-export const checkPhoneNumber = async (payload: ICheckPhoneNumberPayload) => {
+export const checkPhoneNumber = async (
+  payload: IAuthRequestCheckPhoneNumberPayload
+) => {
   const response = await customerAPI.post<
-    ApiResponse<ICheckPhoneNumberResponse>
+    ApiResponse<IAuthResponseCheckPhoneNumber>
   >("/v1/register/check-phone", payload);
 
   return response.data;
 };
 
-export interface ISendOtpToPhoneNumberResponse {
-  status: string;
-  token: string;
-  refno: string;
-  method: string;
-  code: string;
-}
-
 export const sendOtpToPhoneNumber = async (
-  payload: ICheckPhoneNumberPayload
+  payload: IAuthRequestCheckPhoneNumberPayload
 ) => {
   const response = await customerAPI.post<
-    ApiResponse<ISendOtpToPhoneNumberResponse>
+    ApiResponse<IAuthResponseSendOtpToPhoneNumber>
   >("/v1/register/otp/send-sms", payload);
   return response.data;
 };
 
-export const loginWithUsername = async (payload: {
-  username: string;
-  password: string;
-}) => {
-  const response = await customerAPI.post<ApiResponse<null>>(
-    "/v1/auth/login",
-    payload
-  );
+export const loginWithPhoneOtp = async (
+  payload: IAuthRequestLoginWithPhoneOtpPayload
+) => {
+  const response = await customerAPI.post<
+    ApiResponse<IAuthResponseLoginWithPhoneOtp>
+  >("/auth/login-otp", payload);
   return response.data;
 };
 
-export interface ILoginWithPhoneOtpPayload {
-  countryCode: string;
-  otp: string;
-  otpToken: string;
-  phoneNumber: string;
-}
-
-export interface ILoginWithPhoneOtpResponse {
-  accessToken: string;
-  authCenter: {
-    accessToken: string;
-    expiresIn: string;
-    refreshExpiresIn: number;
-    refreshToken: string;
-  };
-}
-
-export const loginWithPhoneOtp = async (payload: ILoginWithPhoneOtpPayload) => {
-  const response = await customerAPI.post<
-    ApiResponse<ILoginWithPhoneOtpResponse>
-  >("/auth/login-otp", payload);
+export const getUserProfileByPhone = async (
+  payload: IAuthRequestCheckPhoneNumberPayload
+) => {
+  const response = await customerAPI.get<ApiResponse<IAuthResponseUserProfile>>(
+    "/v1/register/user-profile",
+    {
+      params: {
+        phoneNumber: payload.phoneNumber,
+        countryCode: payload.countryCode,
+      },
+    }
+  );
   return response.data;
 };

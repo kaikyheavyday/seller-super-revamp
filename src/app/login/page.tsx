@@ -8,23 +8,27 @@ import { useAuth } from "@/hooks/useAuth";
 import { useMutation } from "@tanstack/react-query";
 import {
   checkPhoneNumber,
-  CheckPhoneNumberCode,
   sendOtpToPhoneNumber,
-  ISendOtpToPhoneNumberResponse,
+  getUserProfileByPhone,
 } from "@/api/auth.api";
 import FormOtp from "./components/FormOtp";
+import {
+  IAuthResponseSendOtpToPhoneNumber,
+  ResponseCheckPhoneNumberCode,
+} from "@/interfaces/auth/auth.response.interface";
+import { RouteEnum } from "../constants/enum/route.enum";
 
 const LoginPage: FC = () => {
   const router = useRouter();
   const { user, login } = useAuth();
   const [step, setStep] = useState<1 | 2>(1);
-  const [otpData, setOtpData] = useState<ISendOtpToPhoneNumberResponse>();
+  const [otpData, setOtpData] = useState<IAuthResponseSendOtpToPhoneNumber>();
   const [telNumber, setTelNumber] = useState<string>("");
 
   // Redirect to home if already authenticated
   useEffect(() => {
     if (user) {
-      router.push("/");
+      router.push(RouteEnum.HOME);
     }
   }, [user, router]);
 
@@ -55,7 +59,9 @@ const LoginPage: FC = () => {
           ? values.phoneNumber.slice(1)
           : values.phoneNumber,
       });
-      if (data?.code === CheckPhoneNumberCode.CHECK_PHONE_EXISTS_IN_SYSTEM) {
+      if (
+        data?.code === ResponseCheckPhoneNumberCode.CHECK_PHONE_EXISTS_IN_SYSTEM
+      ) {
         const response = await handleSendOtp({
           phoneNumber: values.phoneNumber.startsWith("0")
             ? values.phoneNumber.slice(1)
@@ -80,7 +86,6 @@ const LoginPage: FC = () => {
     try {
       if (otpData) {
         await login(telNumber, values.otp, otpData.token);
-        router.push("/");
       }
     } catch (error) {
       console.log(error);

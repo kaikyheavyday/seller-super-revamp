@@ -1,6 +1,7 @@
 import Cookies from "js-cookie";
 
 const SESSION_COOKIE_NAME = "auth-session";
+const SESSION_COOKIE_MERCHANT_NAME = "auth-session-merchant";
 
 export interface SessionData {
   accessToken: string;
@@ -24,7 +25,7 @@ export const setSessionCookie = (data: SessionData) => {
 export const getSessionCookie = (): SessionData | null => {
   const cookie = Cookies.get(SESSION_COOKIE_NAME);
   if (!cookie) return null;
-  
+
   try {
     return JSON.parse(cookie);
   } catch {
@@ -37,7 +38,9 @@ export const removeSessionCookie = () => {
 };
 
 // Server-side cookie operations (for API routes and middleware)
-export const getSessionFromCookieString = (cookieString: string): SessionData | null => {
+export const getSessionFromCookieString = (
+  cookieString: string
+): SessionData | null => {
   const cookies = cookieString.split(";").reduce((acc, cookie) => {
     const [key, value] = cookie.trim().split("=");
     acc[key] = value;
@@ -55,7 +58,9 @@ export const getSessionFromCookieString = (cookieString: string): SessionData | 
 };
 
 export const createSessionCookieString = (data: SessionData): string => {
-  return `${SESSION_COOKIE_NAME}=${encodeURIComponent(JSON.stringify(data))}; Path=/; Max-Age=${7 * 24 * 60 * 60}; SameSite=Lax`;
+  return `${SESSION_COOKIE_NAME}=${encodeURIComponent(
+    JSON.stringify(data)
+  )}; Path=/; Max-Age=${7 * 24 * 60 * 60}; SameSite=Lax`;
 };
 
 export const createDeleteCookieString = (): string => {

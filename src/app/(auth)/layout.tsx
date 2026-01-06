@@ -1,7 +1,11 @@
 "use client";
 import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Sidebar from "@/components/Sidebar";
+import Navbar from "@/components/Navbar";
+import { useUserStore } from "@/store/user.store";
+import { RouteEnum } from "../constants/enum/route.enum";
 
 export default function AuthLayout({
   children,
@@ -9,15 +13,20 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   const { user, loading } = useAuth();
+
   const router = useRouter();
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/login");
+      router.push(RouteEnum.LOGIN);
     }
   }, [loading, user, router]);
 
-  // Show loading state while checking session
+  const toggleSidebar = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -26,10 +35,21 @@ export default function AuthLayout({
     );
   }
 
-  // If no user after loading, don't render (redirect will happen)
   if (!user) {
     return null;
   }
 
-  return <>{children}</>;
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Sidebar isCollapsed={isCollapsed} onToggle={toggleSidebar} />
+      <Navbar isCollapsed={isCollapsed} />
+      <main
+        className={`pt-16 transition-all duration-300 ${
+          isCollapsed ? "ml-20" : "ml-64"
+        }`}
+      >
+        <div className="p-6">{children}</div>
+      </main>
+    </div>
+  );
 }

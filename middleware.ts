@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getSessionFromCookieString } from "./src/libs/auth-cookies";
+import { RouteEnum } from "@/app/constants/enum/route.enum";
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -8,10 +9,11 @@ export function middleware(request: NextRequest) {
   const session = getSessionFromCookieString(cookieHeader);
 
   // Public routes that don't require authentication
-  const isPublicRoute = pathname === "/login";
+  const isPublicRoute = pathname === RouteEnum.LOGIN;
 
   // Protected routes
-  const isProtectedRoute = pathname === "/" || pathname.startsWith("/dashboard");
+  const isProtectedRoute =
+    pathname === RouteEnum.HOME || pathname.startsWith(RouteEnum.MERCHANT_LIST);
 
   // If user is authenticated and trying to access login, redirect to home
   if (session && isPublicRoute) {
@@ -27,5 +29,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
+  matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
 };
