@@ -162,9 +162,9 @@ class AxiosClient {
           console.log("[Axios] 401 Unauthorized - Session expired");
 
           // Redirect to logout
-          // if (typeof window !== "undefined") {
-          //   window.location.href = "/login";
-          // }
+          if (typeof window !== "undefined") {
+            window.location.href = "/login";
+          }
         }
 
         return Promise.reject(error);
