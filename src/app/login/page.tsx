@@ -16,17 +16,12 @@ import { RouteEnum } from "../constants/enum/route.enum";
 
 const LoginPage: FC = () => {
   const router = useRouter();
-  const { user, login } = useAuth();
+  const { login } = useAuth();
   const [step, setStep] = useState<1 | 2>(1);
   const [otpData, setOtpData] = useState<IAuthResponseSendOtpToPhoneNumber>();
   const [telNumber, setTelNumber] = useState<string>("");
 
   // Redirect to home if already authenticated
-  useEffect(() => {
-    if (user) {
-      router.push(RouteEnum.HOME);
-    }
-  }, [user, router]);
 
   const { mutate: handleCheckPhoneNumber } = useMutation({
     mutationFn: async (data: { phoneNumber: string }) => {
@@ -78,7 +73,7 @@ const LoginPage: FC = () => {
         onError: (error) => {
           console.error("Error checking phone number:", error);
         },
-      }
+      },
     );
   };
 
@@ -86,6 +81,7 @@ const LoginPage: FC = () => {
     try {
       if (otpData) {
         await login(telNumber, values.otp, otpData.token);
+        router.push(RouteEnum.HOME);
       }
     } catch (error) {
       console.log(error);

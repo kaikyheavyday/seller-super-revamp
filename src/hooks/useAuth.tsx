@@ -18,6 +18,8 @@ import {
 } from "@/libs/auth-cookies";
 import type { AuthContextType, AuthSession } from "@/types/auth.types";
 import { RouteEnum } from "@/app/constants/enum/route.enum";
+import Cookies from "js-cookie";
+import { Cookie } from "next/font/google";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -91,13 +93,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             accessToken: response.data.accessToken,
             authCenter: response.data.authCenter,
           };
-          setSessionCookie(sessionData);
+          // setSessionCookie(sessionData);
+          // console.log(response)
+          Cookies.set("accessToken", response.data.authCenter.accessToken);
+          // Cookies.set("refreshToken", response.data.authCenter.refreshToken);
           setUser(sessionData);
           await fetch("/api/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(sessionData),
           });
+          // Cookies.set("auth", JSON.stringify(response.data));
         } catch (error) {
           console.error("Login failed:", error);
           throw error;
@@ -112,6 +118,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = async () => {
     try {
       removeSessionCookie();
+      Cookies.remove("accessToken");
       setUser(null);
       clearStore();
 

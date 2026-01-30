@@ -14,7 +14,7 @@ import {
 } from "@/interfaces/auth/auth.response.interface";
 
 export const checkPhoneNumber = async (
-  payload: IAuthRequestCheckPhoneNumberPayload
+  payload: IAuthRequestCheckPhoneNumberPayload,
 ) => {
   const response = await customerAPI.post<
     ApiResponse<IAuthResponseCheckPhoneNumber>
@@ -24,7 +24,7 @@ export const checkPhoneNumber = async (
 };
 
 export const sendOtpToPhoneNumber = async (
-  payload: IAuthRequestCheckPhoneNumberPayload
+  payload: IAuthRequestCheckPhoneNumberPayload,
 ) => {
   const response = await customerAPI.post<
     ApiResponse<IAuthResponseSendOtpToPhoneNumber>
@@ -33,7 +33,7 @@ export const sendOtpToPhoneNumber = async (
 };
 
 export const loginWithPhoneOtp = async (
-  payload: IAuthRequestLoginWithPhoneOtpPayload
+  payload: IAuthRequestLoginWithPhoneOtpPayload,
 ) => {
   const response = await customerAPI.post<
     ApiResponse<IAuthResponseLoginWithPhoneOtp>
@@ -42,7 +42,7 @@ export const loginWithPhoneOtp = async (
 };
 
 export const getUserProfileByPhone = async (
-  payload: IAuthRequestCheckPhoneNumberPayload
+  payload: IAuthRequestCheckPhoneNumberPayload,
 ) => {
   const response = await customerAPI.get<ApiResponse<IAuthResponseUserProfile>>(
     "/v1/register/user-profile",
@@ -51,14 +51,13 @@ export const getUserProfileByPhone = async (
         phoneNumber: payload.phoneNumber,
         countryCode: payload.countryCode,
       },
-    }
+    },
   );
   return response.data;
 };
 
 export const getProfile = async () => {
-  const response = await customerAPI.get<IAuthResponseUserProfileWithMerchants>(
-    "/auth"
-  );
+  const response =
+    await customerAPI.get<IAuthResponseUserProfileWithMerchants>("/auth");
   return response.data;
 };
