@@ -19,27 +19,28 @@ import {
 import type { AuthContextType, AuthSession } from "@/types/auth.types";
 import { RouteEnum } from "@/app/constants/enum/route.enum";
 import Cookies from "js-cookie";
-import { Cookie } from "next/font/google";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<AuthSession["user"] | null>(null);
+  const [userSession, setUserSession] = useState<AuthSession["user"] | null>(
+    null,
+  );
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const { setUser: setStoreUser, setMerchant, clearStore } = useUserStore();
+  const { setUser: setStoreUser, setOrganization, clearStore } = useUserStore();
 
   const getSession = useCallback(async () => {
     try {
       const sessionData = getSessionCookie();
       if (sessionData) {
-        setUser(sessionData);
+        setUserSession(sessionData);
       } else {
-        setUser(null);
+        setUserSession(null);
       }
     } catch (error) {
       console.error("Failed to get session:", error);
-      setUser(null);
+      setUserSession(null);
     } finally {
       setLoading(false);
     }
@@ -60,28 +61,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (response.data) {
         try {
-          const decodedToken = jwtDecode<{
-            userId: number;
-            userUuid: string;
-            sub: string;
-            phoneNumber: string;
-            merchantId: number;
-            merchantUuid: string;
-            merchantSlug: string;
-            lastAccessedAt: string;
-            iat: number;
-          }>(response.data.accessToken);
-
           const responseProfile = await getUserProfileByPhone({
             phoneNumber,
             countryCode: "66",
-          });
-
-          // Set merchant data from decoded token
-          setMerchant({
-            merchantId: decodedToken.merchantId,
-            merchantUuid: decodedToken.merchantUuid,
-            merchantSlug: decodedToken.merchantSlug,
           });
 
           // Set user profile data
@@ -93,11 +75,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             accessToken: response.data.accessToken,
             authCenter: response.data.authCenter,
           };
-          // setSessionCookie(sessionData);
-          // console.log(response)
+
           Cookies.set("accessToken", response.data.authCenter.accessToken);
           // Cookies.set("refreshToken", response.data.authCenter.refreshToken);
-          setUser(sessionData);
+          setUserSession(sessionData);
           await fetch("/api/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -119,7 +100,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       removeSessionCookie();
       Cookies.remove("accessToken");
-      setUser(null);
+      setUserSession(null);
       clearStore();
 
       // Call the API route to clear HTTP-only cookie
@@ -132,7 +113,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, getSession }}>
+    <AuthContext.Provider
+      value={{ userSession, loading, login, logout, getSession }}
+    >
       {children}
     </AuthContext.Provider>
   );

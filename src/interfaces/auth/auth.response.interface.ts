@@ -49,7 +49,7 @@ interface IAuthUser {
   cisNumber: string;
 }
 
-interface IAuthOrganization {
+export interface IAuthOrganization {
   isOwner: boolean;
   createdAt: string;
   updatedAt: string;
@@ -188,6 +188,9 @@ export interface IMerchantList {
   orderSuccessTime: number;
   kind: string;
   merchantWebUrl: string;
+  lastAccessedAt: string;
+  organizeId?: number;
+  uuid: string;
 }
 
 export interface IAuthResponseUserProfileWithMerchants {

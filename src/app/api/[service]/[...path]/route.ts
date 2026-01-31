@@ -81,7 +81,6 @@ async function proxyRequest(req: NextRequest, context: RouteContext) {
     }
 
     const hasBody = requestBody !== null && requestBody !== undefined;
-    console.log(req.headers.get("cookie"), "cookies being sent");
     const response = await axios({
       method: req.method,
       url: targetUrl,

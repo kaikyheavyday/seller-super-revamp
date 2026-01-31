@@ -11,7 +11,7 @@ export interface AuthSession {
 }
 
 export interface AuthContextType {
-  user: AuthSession["user"] | null;
+  userSession: AuthSession["user"] | null;
   loading: boolean;
   login: (phoneNumber: string, otp: string, otpToken: string) => Promise<void>;
   logout: () => Promise<void>;

@@ -4,7 +4,6 @@ import { createSessionCookieString } from "@/libs/auth-cookies";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    console.log("Login API received body:", body);
     const { accessToken, authCenter, profile } = body;
 
     if (!accessToken || !authCenter) {

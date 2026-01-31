@@ -5,9 +5,9 @@ import Typography from "@/components/Typography";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function Home() {
-  const { user, logout } = useAuth();
+  const { userSession, logout } = useAuth();
 
-  if (!user) {
+  if (!userSession) {
     return null;
   }
 
@@ -42,7 +42,7 @@ export default function Home() {
                 variant="paragraph-small"
                 className="font-mono text-gray-600 break-all"
               >
-                {user.accessToken.substring(0, 40)}...
+                {userSession.accessToken.substring(0, 40)}...
               </Typography>
             </div>
 
@@ -57,7 +57,7 @@ export default function Home() {
                 variant="paragraph-small"
                 className="font-mono text-gray-600 break-all"
               >
-                {user.authCenter.accessToken.substring(0, 40)}...
+                {userSession.authCenter.accessToken.substring(0, 40)}...
               </Typography>
             </div>
 
@@ -69,7 +69,7 @@ export default function Home() {
                 Expires In:
               </Typography>
               <Typography variant="paragraph-small" className="text-gray-600">
-                {user.authCenter.expiresIn} seconds
+                {userSession.authCenter.expiresIn} seconds
               </Typography>
             </div>
 
@@ -81,7 +81,7 @@ export default function Home() {
                 Refresh Expires In:
               </Typography>
               <Typography variant="paragraph-small" className="text-gray-600">
-                {user.authCenter.refreshExpiresIn} seconds
+                {userSession.authCenter.refreshExpiresIn} seconds
               </Typography>
             </div>
           </div>
