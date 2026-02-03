@@ -1,43 +1,18 @@
 "use client";
 import { Popover, Badge, Avatar } from "antd";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import Typography from "@/components/Typography";
+import BadgeLabel from "@/components/BadgeLabel";
 import { useUserStore } from "@/store/user.store";
 import { useAuth } from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import { getProfile } from "@/api/auth.api";
+import Image from "next/image";
 
 interface NavbarProps {
   isCollapsed: boolean;
 }
-
-// Badge Label Component
-const BadgeLabel = ({
-  prefix,
-  text,
-  color,
-}: {
-  prefix?: React.ReactNode;
-  text: string;
-  color: "error" | "warning" | "info" | "success";
-}) => {
-  const colorClasses = {
-    error: "text-error bg-error/10",
-    warning: "text-warning bg-warning/10",
-    info: "text-info bg-info/10",
-    success: "text-success bg-success/10",
-  };
-
-  return (
-    <span
-      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs ${colorClasses[color]}`}
-    >
-      {prefix}
-      {text}
-    </span>
-  );
-};
 
 const renderLabelByStatus = (status: string) => {
   switch (status) {
@@ -46,6 +21,9 @@ const renderLabelByStatus = (status: string) => {
         <BadgeLabel
           prefix={<i className="ri-information-line text-error"></i>}
           color="error"
+          variant="ghost"
+          size="small"
+          rounding="pill"
           text="ยังไม่ยืนยันตัวตน"
         />
       );
@@ -54,6 +32,9 @@ const renderLabelByStatus = (status: string) => {
         <BadgeLabel
           prefix={<i className="ri-information-line text-warning"></i>}
           color="warning"
+          variant="ghost"
+          size="small"
+          rounding="pill"
           text="รอการอนุมัติ"
         />
       );
@@ -62,6 +43,9 @@ const renderLabelByStatus = (status: string) => {
         <BadgeLabel
           prefix={<i className="ri-draft-line text-info"></i>}
           color="info"
+          variant="ghost"
+          size="small"
+          rounding="pill"
           text="ขอข้อมูลเพิ่มเติม"
         />
       );
@@ -70,6 +54,9 @@ const renderLabelByStatus = (status: string) => {
         <BadgeLabel
           prefix={<i className="ri-verified-badge-line text-success"></i>}
           color="success"
+          variant="ghost"
+          size="small"
+          rounding="pill"
           text="ยืนยันตัวตนแล้ว"
         />
       );
@@ -78,6 +65,9 @@ const renderLabelByStatus = (status: string) => {
         <BadgeLabel
           prefix={<i className="ri-close-line text-error"></i>}
           color="error"
+          variant="ghost"
+          size="small"
+          rounding="pill"
           text="ไม่ได้รับการอนุมัติ"
         />
       );
@@ -86,6 +76,9 @@ const renderLabelByStatus = (status: string) => {
         <BadgeLabel
           prefix={<i className="ri-information-line text-error"></i>}
           color="error"
+          variant="ghost"
+          size="small"
+          rounding="pill"
           text="ยังไม่ยืนยันตัวตน"
         />
       );
@@ -103,7 +96,10 @@ export default function Navbar({ isCollapsed }: NavbarProps) {
     setOrganization,
   } = useUserStore();
   const [userPopoverOpen, setUserPopoverOpen] = useState(false);
-
+  const pathname = usePathname();
+  const isOrganizationMode = useMemo(() => {
+    return pathname.startsWith("/organizations");
+  }, [pathname]);
   const organizations = userProfile?.organizations || [];
   const currentUser = userProfile?.user;
   const { data: dataProfileMerchant } = useQuery({
@@ -118,10 +114,13 @@ export default function Navbar({ isCollapsed }: NavbarProps) {
       return currentTime > maxTime ? current : max;
     },
   );
+
   // Get current merchant organization
-  const currentOrganization = userProfile?.organizations.find(
-    (org) => org.organization.id === merchantsLastAccessed?.organizeId,
-  );
+  const currentOrganization = organization
+    ? organization?.organizationDetail
+    : userProfile?.organizations.find(
+        (org) => org.organization.id === merchantsLastAccessed?.organizeId,
+      );
 
   useEffect(() => {
     if (currentOrganization) {
@@ -136,22 +135,19 @@ export default function Navbar({ isCollapsed }: NavbarProps) {
   const organizationMerchants = dataProfileMerchant?.merchants.filter(
     (m) => m.organizeId === organization?.organizeId,
   );
-
   useEffect(() => {
-    if (merchantsLastAccessed) {
+    if (organizationMerchants && organizationMerchants.length === 1) {
       setMerchant({
-        merchantId: merchantsLastAccessed?.id || 0,
-        merchantUuid: merchantsLastAccessed?.uuid || "",
-        merchantSlug: merchantsLastAccessed?.slug || "",
+        merchantId: organizationMerchants[0].id,
+        merchantUuid: organizationMerchants[0].uuid,
+        merchantSlug: organizationMerchants[0].slug,
       });
     }
-  }, [merchantsLastAccessed]);
+  }, [organizationMerchants]);
 
   const getMerchantStatus = () => {
     return { text: "เปิดขาย", color: "#00AF43" };
   };
-
-  console.log(merchant, organization);
 
   // Store Selector Popover Content
   const storePopoverContent = (
@@ -323,7 +319,7 @@ export default function Navbar({ isCollapsed }: NavbarProps) {
       </div>
       <div
         className="p-2 flex items-center justify-between text-sm text-text-secondary cursor-pointer"
-        onClick={() => router.push("/your-organization")}
+        onClick={() => router.push("/organizations")}
       >
         <div className="flex gap-2 items-center">
           <i className="ri-settings-3-line text-base"></i>
@@ -374,7 +370,7 @@ export default function Navbar({ isCollapsed }: NavbarProps) {
       </div>
       <div
         className="p-2 flex items-center justify-between text-sm text-text-secondary cursor-pointer hover:bg-gray-50"
-        onClick={() => router.push("/your-organization")}
+        onClick={() => router.push("/organizations")}
       >
         <div className="flex gap-2 items-center">
           <i className="ri-settings-4-line text-base"></i>
@@ -409,12 +405,13 @@ export default function Navbar({ isCollapsed }: NavbarProps) {
     <header
       className={`fixed top-0 right-0 h-16 px-6 bg-white border-b border-gray-200 flex items-center justify-between z-[999] transition-[left] duration-200`}
       style={{
-        left: isCollapsed ? 80 : 290,
+        left: isCollapsed ? (isOrganizationMode ? 0 : 80) : 290,
+        // left: 0
       }}
     >
       {/* Left Section - Store Selector */}
       <div>
-        {merchant && (
+        {merchant && !isOrganizationMode && (
           <Popover
             content={storePopoverContent}
             placement="bottomLeft"
@@ -450,6 +447,20 @@ export default function Navbar({ isCollapsed }: NavbarProps) {
             </div>
           </Popover>
         )}
+        {isOrganizationMode && (
+          <div className="relative w-[190px] h-8">
+            <Image
+              src="/home/allkons-logo.svg"
+              alt="Logo"
+              fill
+              className="object-contain cursor-pointer"
+              priority
+              onClick={() => {
+                router.push("/");
+              }}
+            />
+          </div>
+        )}
       </div>
 
       {/* Right Section */}
@@ -473,7 +484,7 @@ export default function Navbar({ isCollapsed }: NavbarProps) {
         </Badge>
 
         {/* Organization Selector */}
-        {organization?.organizationDetail && (
+        {organization?.organizationDetail && !isOrganizationMode && (
           <Popover
             content={organizationPopoverContent}
             placement="bottomRight"

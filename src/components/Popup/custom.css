@@ -1,0 +1,27 @@
+.custom-allkons.custom-drawer.ant-drawer-content {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.custom-allkons.custom-drawer.ant-drawer-content .ant-drawer-header {
+  border-bottom: 0;
+}
+
+.custom-allkons.custom-modal.ant-modal .ant-modal-content {
+  border-radius: 24px;
+}
+
+.custom-allkons.custom-modal.ant-modal .ant-modal-close {
+  border: 1px solid #dee1e6;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.custom-allkons.custom-modal.ant-modal .ant-modal-close-x {
+  font-size: 16px;
+}
+
+.custom-allkons.custom-modal.ant-modal .ant-modal-close-x svg {
+  fill: #37404f;
+}

@@ -3,3 +3,10 @@ export type ApiResponse<T> = {
   message: string;
   data: T | null;
 };
+
+export type PaginationResponse = {
+  page: number;
+  pageLimit: number;
+  totalItems: number;
+  totalPages: number;
+};

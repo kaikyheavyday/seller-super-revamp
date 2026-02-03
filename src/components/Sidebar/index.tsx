@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useMemo, useCallback, memo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
@@ -18,7 +18,7 @@ const Icon = ({ name }: { name: string }) => (
   <i className={name} style={{ fontSize: "20px", marginRight: "10px" }} />
 );
 
-const Sidebar = memo(function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
+export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
   const pathname = usePathname();
   const [selectedKey, setSelectedKey] = useState<string>("");
   const [openKeys, setOpenKeys] = useState<string[]>([]);
@@ -35,7 +35,7 @@ const Sidebar = memo(function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
     return () => window.removeEventListener("resize", checkScreenSize);
-  }, [onToggle, isCollapsed]);
+  }, [window.innerWidth]);
 
   const menuItems: MenuItem[] = useMemo(() => {
     if (isCollapsed) {
@@ -291,7 +291,7 @@ const Sidebar = memo(function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
             findActiveParent(item.children);
           } else if (item?.children) {
             const hasActiveChild = item.children.some(
-              (child: any) => child?.key === currentPath
+              (child: any) => child?.key === currentPath,
             );
             if (hasActiveChild) newOpenKeys.push(item.key as string);
             findActiveParent(item.children);
@@ -350,8 +350,4 @@ const Sidebar = memo(function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
       />
     </aside>
   );
-});
-
-Sidebar.displayName = "Sidebar";
-
-export default Sidebar;
+}

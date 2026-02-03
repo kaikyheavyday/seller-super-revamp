@@ -8,14 +8,9 @@ import React, {
   useCallback,
 } from "react";
 import { useRouter } from "next/navigation";
-import { jwtDecode } from "jwt-decode";
 import { getUserProfileByPhone, loginWithPhoneOtp } from "@/api/auth.api";
 import { useUserStore } from "@/store/user.store";
-import {
-  setSessionCookie,
-  getSessionCookie,
-  removeSessionCookie,
-} from "@/libs/auth-cookies";
+import { getSessionCookie, removeSessionCookie } from "@/libs/auth-cookies";
 import type { AuthContextType, AuthSession } from "@/types/auth.types";
 import { RouteEnum } from "@/app/constants/enum/route.enum";
 import Cookies from "js-cookie";

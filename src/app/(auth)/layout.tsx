@@ -1,7 +1,7 @@
 "use client";
 import { useAuth } from "@/hooks/useAuth";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import Navbar from "@/components/Navbar";
 import { RouteEnum } from "../constants/enum/route.enum";
@@ -15,15 +15,24 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   const { userSession, loading } = useAuth();
-  const { user, organization } = useUserStore();
   const router = useRouter();
+  const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const isOrganizationMode = useMemo(() => {
+    return pathname.startsWith("/organizations");
+  }, [pathname]);
 
   useEffect(() => {
     if (!loading && !userSession) {
       router.push(RouteEnum.LOGIN);
     }
   }, [loading, userSession, router]);
+
+  useEffect(() => {
+    if (isOrganizationMode) {
+      setIsCollapsed(true);
+    }
+  }, [isOrganizationMode]);
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
@@ -43,12 +52,14 @@ export default function AuthLayout({
 
   return (
     <div className="min-h-screen bg-[#F5F5F5]">
-      <Sidebar isCollapsed={isCollapsed} onToggle={toggleSidebar} />
+      {!isOrganizationMode && (
+        <Sidebar isCollapsed={isCollapsed} onToggle={toggleSidebar} />
+      )}
       <Navbar isCollapsed={isCollapsed} />
       <main
         className="pt-16 transition-[margin-left] duration-200"
         style={{
-          marginLeft: isCollapsed ? 80 : 290,
+          marginLeft: isCollapsed ? (isOrganizationMode ? 0 : 80) : 290,
         }}
       >
         <div className="p-6">{children}</div>
