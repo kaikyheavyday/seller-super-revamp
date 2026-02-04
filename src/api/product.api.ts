@@ -44,7 +44,7 @@ export const getMerchantsProductCount = async (merchantSlug: string) => {
       CurrentMerchantSlug: merchantSlug,
     },
   });
-
+  console.log(response);
   return response.data;
 };
 

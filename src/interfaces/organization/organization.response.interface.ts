@@ -13,3 +13,14 @@ export interface IOrganizationResponse {
     hasPrev: boolean;
   };
 }
+
+export interface IOrganizationJuristicTypeMasterDataResponse {
+  id: number;
+  label: string;
+  value: string;
+  prefix: string | null;
+  subfix: string | null;
+  language: string;
+  createdAt?: string;
+  updatedAt?: string;
+}

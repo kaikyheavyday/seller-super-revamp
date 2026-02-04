@@ -5,4 +5,5 @@ export const routes = {
   productList: () => "/products/manage-products",
   productImport: () => "/products/manage-products/import",
   organizationList: () => "/organizations",
+  organizationCreate: () => "/organizations/create",
 };

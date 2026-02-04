@@ -221,8 +221,7 @@ export const OrganizationPage = () => {
           variant="solid"
           color="primary"
           onClick={() => {
-            // Navigate to create organization page (you'll need to add this route)
-            // router.push('/your-organization/new');
+            router.push(routes.organizationCreate());
           }}
         >
           สร้างองค์กรใหม่
