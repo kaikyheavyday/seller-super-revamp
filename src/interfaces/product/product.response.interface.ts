@@ -88,3 +88,19 @@ export interface IResponseProductVariantImage {
     url: string;
   };
 }
+
+export interface IProductImport {
+  id: string;
+  name: string;
+  sku: string;
+  brand: string;
+  barcode: string;
+  categoryName: string | null;
+  image: string | null;
+  productVariant: null;
+}
+
+export interface IResponseProductImport {
+  meta: PaginationResponse;
+  items: IProductImport[];
+}

@@ -7,3 +7,10 @@ export interface IRequestQueryProductMerchant {
   categoryIds?: string;
   merchantProductStatus?: string;
 }
+
+export interface IRequestQueryCreateProduct {
+  page: number;
+  pageLimit: number;
+  search?: string;
+  searchType?: string;
+}

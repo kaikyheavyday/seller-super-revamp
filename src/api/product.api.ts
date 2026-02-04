@@ -1,4 +1,7 @@
-import { IRequestQueryProductMerchant } from "@/interfaces/product/product.request.interface";
+import {
+  IRequestQueryCreateProduct,
+  IRequestQueryProductMerchant,
+} from "@/interfaces/product/product.request.interface";
 import {
   IProductResponseList,
   IResponseMerchantProductCount,
@@ -71,6 +74,28 @@ export const getProductVariantImages = async (
       productVariantIds: productVariantIds,
     },
   });
+
+  return response.data;
+};
+
+export const getProductImport = async (
+  merchantSlug: string,
+  params: IRequestQueryCreateProduct,
+) => {
+  const response = await productAPI.get<ApiResponse<string>>(
+    `/v1/product/product-import`,
+    {
+      headers: {
+        CurrentMerchantSlug: merchantSlug,
+      },
+      params: {
+        page: params.page,
+        pageLimit: params.pageLimit,
+        search: params.search,
+        searchType: params.searchType,
+      },
+    },
+  );
 
   return response.data;
 };

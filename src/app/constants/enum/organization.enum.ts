@@ -1,0 +1,4 @@
+export enum OrganizationType {
+  REGISTERED_INDIVIDUAL = "REGISTERED_INDIVIDUAL",
+  JURISTIC = "JURISTIC",
+}

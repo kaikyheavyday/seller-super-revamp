@@ -4,7 +4,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import Navbar from "@/components/Navbar";
-import { RouteEnum } from "../constants/enum/route.enum";
+import { routes } from "../constants/routing.constants";
 import { useQuery } from "@tanstack/react-query";
 import { getProfile } from "@/api/auth.api";
 import { useUserStore } from "@/store/user.store";
@@ -24,7 +24,7 @@ export default function AuthLayout({
 
   useEffect(() => {
     if (!loading && !userSession) {
-      router.push(RouteEnum.LOGIN);
+      router.push(routes.login());
     }
   }, [loading, userSession, router]);
 

@@ -9,6 +9,7 @@ interface IMerchantData {
   merchantId: number;
   merchantUuid: string;
   merchantSlug: string;
+  merchantName: string;
 }
 
 interface IOrganizationData {

@@ -9,6 +9,9 @@ import { useAuth } from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import { getProfile } from "@/api/auth.api";
 import Image from "next/image";
+import { routes } from "@/app/constants/routing.constants";
+import { OrganizationType } from "@/app/constants/enum/organization.enum";
+import CustomButton from "../Button";
 
 interface NavbarProps {
   isCollapsed: boolean;
@@ -141,9 +144,19 @@ export default function Navbar({ isCollapsed }: NavbarProps) {
         merchantId: organizationMerchants[0].id,
         merchantUuid: organizationMerchants[0].uuid,
         merchantSlug: organizationMerchants[0].slug,
+        merchantName: organizationMerchants[0].companyName,
       });
     }
   }, [organizationMerchants]);
+
+  const registeredIndividualOrgs = organizations.filter(
+    (org) =>
+      org.organization.organizationType ===
+      OrganizationType.REGISTERED_INDIVIDUAL,
+  );
+  const juristicOrgs = organizations.filter(
+    (org) => org.organization.organizationType === OrganizationType.JURISTIC,
+  );
 
   const getMerchantStatus = () => {
     return { text: "เปิดขาย", color: "#00AF43" };
@@ -165,6 +178,7 @@ export default function Navbar({ isCollapsed }: NavbarProps) {
               merchantId: m.id,
               merchantUuid: m.uuid,
               merchantSlug: m.slug,
+              merchantName: m.companyName,
             });
           }}
           className={`flex gap-2 items-center justify-between rounded-md pl-1 px-3 py-2 cursor-pointer hover:bg-background-secondary/70 ${
@@ -182,7 +196,7 @@ export default function Navbar({ isCollapsed }: NavbarProps) {
                 variant="paragraph-small"
                 className="!text-primary-dark"
               >
-                {m?.slug || "-"}
+                {m?.companyName || "-"}
               </Typography>
               <div className="flex items-center gap-1">
                 <span
@@ -211,7 +225,7 @@ export default function Navbar({ isCollapsed }: NavbarProps) {
       </div>
       <div
         className="p-2 flex items-center justify-between text-sm text-text-secondary cursor-pointer"
-        onClick={() => router.push("/merchant-list")}
+        onClick={() => router.push(routes.merchantList())}
       >
         <div className="flex gap-2 items-center">
           <i className="ri-settings-3-line text-base"></i>
@@ -230,82 +244,186 @@ export default function Navbar({ isCollapsed }: NavbarProps) {
       >
         เลือกองค์กร
       </Typography>
-      {organizations.length > 0 && (
-        <div className="px-4 py-3 rounded-2xl bg-background-secondary">
-          <div className="mb-2">
-            <Typography
-              variant="paragraph-extra-small"
-              className="!text-text-quinary"
-            >
-              องค์กรของคุณ
-            </Typography>
-          </div>
-          {organizations.map((org) => (
-            <div
-              key={org.organization.uuid}
-              onClick={() => {
-                setOrganization({
-                  organizeUuid: org.organization.uuid,
-                  organizationDetail: org,
-                  organizeId: org.organization.id,
-                });
-                // Set the first merchant of the selected organization (by lastAccessedAt)
-                const orgMerchants = dataProfileMerchant?.merchants.filter(
-                  (m) => m.organizeId === org.organization.id,
-                );
-                if (orgMerchants && orgMerchants.length > 0) {
-                  const lastAccessedMerchant = orgMerchants.reduce(
-                    (max, current) => {
-                      const currentTime = new Date(
-                        current.lastAccessedAt,
-                      ).getTime();
-                      const maxTime = new Date(max.lastAccessedAt).getTime();
-                      return currentTime > maxTime ? current : max;
-                    },
-                  );
-                  setMerchant({
-                    merchantId: lastAccessedMerchant.id,
-                    merchantUuid: lastAccessedMerchant.uuid,
-                    merchantSlug: lastAccessedMerchant.slug,
-                  });
-                }
-              }}
-              className="cursor-pointer"
-            >
-              <div className="flex gap-2 items-center justify-between pl-1 px-3 py-2 hover:bg-white/50 rounded-lg">
-                <div className="flex gap-2">
-                  <Avatar size={40} className="!bg-[#E8F5E9]">
-                    <span className="text-primary text-base font-semibold">
-                      {org.organization.organizeName
-                        ?.substring(0, 2)
-                        .toUpperCase() || "OR"}
-                    </span>
-                  </Avatar>
-                  <div>
-                    <Typography
-                      variant="paragraph-small"
-                      className="!text-text-secondary"
-                    >
-                      {org.organization.organizeName || "-"}
-                    </Typography>
-                    <div className="flex items-center gap-1">
-                      <Typography
-                        variant="paragraph-extra-small"
-                        className="!text-text-quarternary"
-                      >
-                        {org.isOwner ? "เจ้าของ" : "สมาชิก"}
-                      </Typography>
+      {(juristicOrgs.length > 0 || registeredIndividualOrgs.length > 0) && (
+        <div className="flex flex-col gap-2">
+          {juristicOrgs.length > 0 && (
+            <div className="px-4 py-3 rounded-2xl bg-background-secondary">
+              <div className="mb-2">
+                <Typography
+                  variant="paragraph-extra-small"
+                  className="!text-text-quinary"
+                >
+                  นิติบุคคล
+                </Typography>
+              </div>
+              {juristicOrgs.map((org) => (
+                <div
+                  key={org.organization.uuid}
+                  onClick={() => {
+                    setOrganization({
+                      organizeUuid: org.organization.uuid,
+                      organizationDetail: org,
+                      organizeId: org.organization.id,
+                    });
+                    // Set the first merchant of the selected organization (by lastAccessedAt)
+                    const orgMerchants = dataProfileMerchant?.merchants.filter(
+                      (m) => m.organizeId === org.organization.id,
+                    );
+                    if (orgMerchants && orgMerchants.length > 0) {
+                      const lastAccessedMerchant = orgMerchants.reduce(
+                        (max, current) => {
+                          const currentTime = new Date(
+                            current.lastAccessedAt,
+                          ).getTime();
+                          const maxTime = new Date(
+                            max.lastAccessedAt,
+                          ).getTime();
+                          return currentTime > maxTime ? current : max;
+                        },
+                      );
+                      setMerchant({
+                        merchantId: lastAccessedMerchant.id,
+                        merchantUuid: lastAccessedMerchant.uuid,
+                        merchantSlug: lastAccessedMerchant.slug,
+                        merchantName: lastAccessedMerchant.companyName,
+                      });
+                    }
+                  }}
+                  className="cursor-pointer"
+                >
+                  <div className="flex gap-2 items-center justify-between pl-1 px-3 py-2 hover:bg-white/50 rounded-lg">
+                    <div className="flex gap-2">
+                      <Avatar size={40} className="!bg-[#E8F5E9]">
+                        <span className="text-primary text-base font-semibold">
+                          {org.organization.organizeName
+                            ?.substring(0, 2)
+                            .toUpperCase() || "OR"}
+                        </span>
+                      </Avatar>
+                      <div>
+                        <Typography
+                          variant="paragraph-small"
+                          className="!text-text-secondary"
+                        >
+                          {org.organization.organizeName || "-"}
+                        </Typography>
+                        <div className="flex items-center gap-1">
+                          <Typography
+                            variant="paragraph-extra-small"
+                            className="!text-text-quarternary"
+                          >
+                            {org.isOwner ? "เจ้าของ" : "สมาชิก"}
+                          </Typography>
+                        </div>
+                      </div>
                     </div>
+                    {organization?.organizeId === org.organization.id ? (
+                      <i className="ri-checkbox-circle-fill text-base text-primary ml-1"></i>
+                    ) : (
+                      <i className="ri-checkbox-blank-circle-line text-[#BDC3CD] ml-1"></i>
+                    )}
+                  </div>
+                  {organization?.organizeId === org.organization.id && (
+                    <div className="w-full my-2">
+                      <CustomButton
+                        size="small"
+                        variant="outlined"
+                        color="neutral"
+                        fullWidth
+                        icon={<i className="ri-edit-2-line" />}
+                      >
+                        แก้ไขข้อมูลองค์กร
+                      </CustomButton>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+          {registeredIndividualOrgs.length > 0 && (
+            <div className="px-4 py-3 rounded-2xl bg-background-secondary">
+              <div className="mb-2">
+                <Typography
+                  variant="paragraph-extra-small"
+                  className="!text-text-quinary"
+                >
+                  บุคคลธรรมดา จดทะเบียนพาณิชย์
+                </Typography>
+              </div>
+              {registeredIndividualOrgs.map((org) => (
+                <div
+                  key={org.organization.uuid}
+                  onClick={() => {
+                    setOrganization({
+                      organizeUuid: org.organization.uuid,
+                      organizationDetail: org,
+                      organizeId: org.organization.id,
+                    });
+                    // Set the first merchant of the selected organization (by lastAccessedAt)
+                    const orgMerchants = dataProfileMerchant?.merchants.filter(
+                      (m) => m.organizeId === org.organization.id,
+                    );
+                    if (orgMerchants && orgMerchants.length > 0) {
+                      const lastAccessedMerchant = orgMerchants.reduce(
+                        (max, current) => {
+                          const currentTime = new Date(
+                            current.lastAccessedAt,
+                          ).getTime();
+                          const maxTime = new Date(
+                            max.lastAccessedAt,
+                          ).getTime();
+                          return currentTime > maxTime ? current : max;
+                        },
+                      );
+                      setMerchant({
+                        merchantId: lastAccessedMerchant.id,
+                        merchantUuid: lastAccessedMerchant.uuid,
+                        merchantSlug: lastAccessedMerchant.slug,
+                        merchantName: lastAccessedMerchant.companyName,
+                      });
+                    }
+                  }}
+                  className="cursor-pointer"
+                >
+                  <div className="flex gap-2 items-center justify-between pl-1 px-3 py-2 hover:bg-white/50 rounded-lg">
+                    <div className="flex gap-2">
+                      <Avatar size={40} className="!bg-[#E8F5E9]">
+                        <span className="text-primary text-base font-semibold">
+                          {org.organization.organizeName
+                            ?.substring(0, 2)
+                            .toUpperCase() || "OR"}
+                        </span>
+                      </Avatar>
+                      <div>
+                        <Typography
+                          variant="paragraph-small"
+                          className="!text-text-secondary"
+                        >
+                          {org.organization.organizeName || "-"}
+                        </Typography>
+                        <div className="flex items-center gap-1">
+                          <Typography
+                            variant="paragraph-extra-small"
+                            className="!text-text-quarternary"
+                          >
+                            {org.isOwner ? "เจ้าของ" : "สมาชิก"}
+                          </Typography>
+                        </div>
+                      </div>
+                    </div>
+                    {organization?.organizeId === org.organization.id ? (
+                      <i className="ri-checkbox-circle-fill text-base text-primary ml-1"></i>
+                    ) : (
+                      <i className="ri-checkbox-blank-circle-line text-[#BDC3CD] ml-1"></i>
+                    )}
                   </div>
                 </div>
-                {organization?.organizeId === org.organization.id && (
-                  <i className="ri-checkbox-circle-fill text-base text-primary ml-1"></i>
-                )}
-              </div>
+              ))}
             </div>
-          ))}
+          )}
         </div>
       )}
+
       <div className="p-2 flex items-center justify-between text-sm text-text-secondary cursor-pointer">
         <div className="flex gap-2 items-center">
           <i className="ri-add-circle-line text-base"></i>
@@ -319,7 +437,7 @@ export default function Navbar({ isCollapsed }: NavbarProps) {
       </div>
       <div
         className="p-2 flex items-center justify-between text-sm text-text-secondary cursor-pointer"
-        onClick={() => router.push("/organizations")}
+        onClick={() => router.push(routes.organizationList())}
       >
         <div className="flex gap-2 items-center">
           <i className="ri-settings-3-line text-base"></i>
@@ -370,7 +488,7 @@ export default function Navbar({ isCollapsed }: NavbarProps) {
       </div>
       <div
         className="p-2 flex items-center justify-between text-sm text-text-secondary cursor-pointer hover:bg-gray-50"
-        onClick={() => router.push("/organizations")}
+        onClick={() => router.push(routes.organizationList())}
       >
         <div className="flex gap-2 items-center">
           <i className="ri-settings-4-line text-base"></i>
@@ -428,7 +546,7 @@ export default function Navbar({ isCollapsed }: NavbarProps) {
                   variant="paragraph-small"
                   className="!text-primary-dark"
                 >
-                  {merchant?.merchantSlug || "ร้านค้า"}
+                  {merchant?.merchantName || "ร้านค้า"}
                 </Typography>
                 <div className="flex items-center gap-1">
                   <span

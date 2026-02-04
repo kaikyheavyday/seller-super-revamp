@@ -12,7 +12,7 @@ import {
   IAuthResponseSendOtpToPhoneNumber,
   ResponseCheckPhoneNumberCode,
 } from "@/interfaces/auth/auth.response.interface";
-import { RouteEnum } from "../constants/enum/route.enum";
+import { routes } from "../constants/routing.constants";
 
 const LoginPage: FC = () => {
   const router = useRouter();
@@ -81,7 +81,7 @@ const LoginPage: FC = () => {
     try {
       if (otpData) {
         await login(telNumber, values.otp, otpData.token);
-        router.push(RouteEnum.HOME);
+        router.push(routes.home());
       }
     } catch (error) {
       console.log(error);

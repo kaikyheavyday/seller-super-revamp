@@ -32,6 +32,7 @@ import {
   ICategoryByProductVariantResponse,
   ICategoryTree,
 } from "@/interfaces/category/category.response.interface";
+import { useRouter } from "next/navigation";
 
 // Types
 interface Filter {
@@ -86,7 +87,7 @@ const getStatusConfig = (status: string) => {
 
 export default function Products() {
   const { merchant } = useUserStore();
-
+  const router = useRouter();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -994,7 +995,10 @@ export default function Products() {
           >
             นำเข้า/อัปเดตสินค้า
           </CustomButton>
-          <CustomButton icon={<i className="ri-add-line"></i>}>
+          <CustomButton
+            icon={<i className="ri-add-line"></i>}
+            onClick={() => {}}
+          >
             เพิ่มสินค้าจากระบบ
           </CustomButton>
         </div>

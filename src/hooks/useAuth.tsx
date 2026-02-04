@@ -12,7 +12,7 @@ import { getUserProfileByPhone, loginWithPhoneOtp } from "@/api/auth.api";
 import { useUserStore } from "@/store/user.store";
 import { getSessionCookie, removeSessionCookie } from "@/libs/auth-cookies";
 import type { AuthContextType, AuthSession } from "@/types/auth.types";
-import { RouteEnum } from "@/app/constants/enum/route.enum";
+import { routes } from "@/app/constants/routing.constants";
 import Cookies from "js-cookie";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -101,7 +101,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Call the API route to clear HTTP-only cookie
       await fetch("/api/auth/logout", { method: "POST" });
 
-      router.push(RouteEnum.LOGIN);
+      router.push(routes.login());
     } catch (error) {
       console.error("Logout failed:", error);
     }
