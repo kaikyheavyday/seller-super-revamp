@@ -157,6 +157,7 @@ export default function Navbar({ isCollapsed }: NavbarProps) {
   const juristicOrgs = organizations.filter(
     (org) => org.organization.organizationType === OrganizationType.JURISTIC,
   );
+  console.log(registeredIndividualOrgs, juristicOrgs);
 
   const getMerchantStatus = () => {
     return { text: "เปิดขาย", color: "#00AF43" };

@@ -8,12 +8,11 @@ import Typography from "@/components/Typography";
 import Button from "@/components/Button";
 import { useForm } from "antd/es/form/Form";
 import SectionIcon from "@/components/Section/SectionIcon";
-import { ISendOtpToPhoneNumberResponse } from "@/api/auth.api";
 
 interface FormOtpProps {
   loading?: boolean;
   onFinish?: (values: { otp: string }) => Promise<void>;
-  otpData?: ISendOtpToPhoneNumberResponse;
+  otpData?: { refno: string };
   resendOtp?: () => void;
   testId?: string;
 }
@@ -57,7 +56,7 @@ const FormOtp: React.FC<FormOtpProps> = ({
   const useDataTestId = useDataTestIdWithPath(
     usePathname(),
     "otp-input",
-    "test"
+    "test",
   );
 
   return (

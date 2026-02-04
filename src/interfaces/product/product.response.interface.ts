@@ -54,12 +54,12 @@ export interface IProductResponseMerchantProduct {
   productType: IProductResponseType;
 }
 
-export interface IProductResponseList {
+export interface IProductResponseListResponse {
   items: IProductResponseMerchantProduct[];
   meta: PaginationResponse;
 }
 
-export interface IResponseMerchantProductCount {
+export interface IMerchantProductCountResponse {
   ALL: number;
   Hidden: number;
   NotApproved: number;
@@ -67,7 +67,7 @@ export interface IResponseMerchantProductCount {
   Selling: number;
 }
 
-export interface IResponseProductMasterData {
+export interface IProductMasterDataResponse {
   id: number;
   type: string;
   code: string;
@@ -76,7 +76,7 @@ export interface IResponseProductMasterData {
   displayOrder: number;
 }
 
-export interface IResponseProductVariantImage {
+export interface IProductVariantImageResponse {
   id: number;
   productVariantId: number;
   imageUploadId: number;
@@ -100,7 +100,7 @@ export interface IProductImport {
   productVariant: null;
 }
 
-export interface IResponseProductImport {
+export interface IProductImportResponse {
   meta: PaginationResponse;
   items: IProductImport[];
 }

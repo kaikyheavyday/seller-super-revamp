@@ -26,7 +26,7 @@ export interface IAuthResponseLoginWithPhoneOtp {
   };
 }
 
-interface IAuthUser {
+export interface IAuthUser {
   id: number;
   uuid: string;
   countryCode: string;

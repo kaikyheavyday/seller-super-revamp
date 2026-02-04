@@ -20,11 +20,13 @@ export default function MerchantListPage() {
     id: number;
     uuid: string;
     slug: string;
+    name: string;
   }) => {
     setMerchant({
       merchantId: merchantData.id,
       merchantUuid: merchantData.uuid,
       merchantSlug: merchantData.slug,
+      merchantName: merchantData.name,
     });
 
     // Refetch to update data with new merchant context
@@ -58,6 +60,7 @@ export default function MerchantListPage() {
                   id: merchant.id,
                   uuid: merchant.uuid,
                   slug: merchant.slug,
+                  name: merchant.companyName,
                 })
               }
               className={`cursor-pointer transition-all ${

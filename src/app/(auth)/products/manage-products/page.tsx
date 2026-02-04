@@ -25,7 +25,7 @@ import {
 import { useUserStore } from "@/store/user.store";
 import {
   IProductResponseMerchantProduct,
-  IResponseProductVariantImage,
+  IProductVariantImageResponse,
 } from "@/interfaces/product/product.response.interface";
 import {
   ICategoryResponse,
@@ -223,7 +223,7 @@ export default function Products() {
     const map: Record<number, string> = {};
     const images = productVariantImagesData?.data;
     if (Array.isArray(images)) {
-      images.forEach((item: IResponseProductVariantImage) => {
+      images.forEach((item: IProductVariantImageResponse) => {
         if (!map[item.productVariantId] && item.imageUpload?.url) {
           map[item.productVariantId] = item.imageUpload.url;
         }
